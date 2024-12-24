@@ -1,6 +1,38 @@
 import 'package:flutter/material.dart';
 
-class WeeklyPatternsPage extends StatelessWidget {
+class WeeklyPatternsPage extends StatefulWidget {
+  @override
+  _WeeklyPatternsPageState createState() => _WeeklyPatternsPageState();
+}
+
+class _WeeklyPatternsPageState extends State<WeeklyPatternsPage> {
+  // Current selected week
+  int selectedWeek = 1;
+
+  // Sample usage data for each week
+  final Map<int, List<Map<String, String>>> usageData = {
+    1: [
+      {'label': 'TV-1', 'usage': '3450/10000'},
+      {'label': 'AC-1', 'usage': '2500/10000'},
+      {'label': 'Fridge', 'usage': '4050/10000'},
+    ],
+    2: [
+      {'label': 'TV-1', 'usage': '3000/10000'},
+      {'label': 'AC-1', 'usage': '2200/10000'},
+      {'label': 'Fridge', 'usage': '4000/10000'},
+    ],
+    3: [
+      {'label': 'TV-1', 'usage': '4000/10000'},
+      {'label': 'AC-1', 'usage': '2700/10000'},
+      {'label': 'Fridge', 'usage': '4500/10000'},
+    ],
+    4: [
+      {'label': 'TV-1', 'usage': '3800/10000'},
+      {'label': 'AC-1', 'usage': '2600/10000'},
+      {'label': 'Fridge', 'usage': '4200/10000'},
+    ],
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,10 +62,16 @@ class WeeklyPatternsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Greeting and Date Selector
+                      // Back Button and Greeting
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          IconButton(
+                            icon: Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: () {
+                              Navigator.pop(context); // Navigate back to the previous page
+                            },
+                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -62,15 +100,44 @@ class WeeklyPatternsPage extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 16),
-                      // Week Selector
+                      // Week Selector Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildWeekTab(context, 'Week 1', isSelected: true),
-                          _buildWeekTab(context, 'Week 2'),
-                          _buildWeekTab(context, 'Week 3'),
-                          _buildWeekTab(context, 'Week 4'),
-                        ],
+                        children: List.generate(4, (index) {
+                          final week = index + 1;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedWeek = week;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Week $week',
+                                  style: TextStyle(
+                                    color: selectedWeek == week
+                                        ? Colors.white
+                                        : Colors.white70,
+                                    fontWeight: selectedWeek == week
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                  ),
+                                ),
+                                if (selectedWeek == week)
+                                  Container(
+                                    width: 6,
+                                    height: 6,
+                                    margin: EdgeInsets.only(top: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          );
+                        }),
                       ),
                     ],
                   ),
@@ -97,60 +164,22 @@ class WeeklyPatternsPage extends StatelessWidget {
                 SizedBox(height: 16),
                 // Data Cards
                 Expanded(
-                  child: ListView(
+                  child: ListView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    children: [
-                      _buildDataCard(
-                        label: 'TV-1',
-                        usage: '3450/10000',
+                    itemCount: usageData[selectedWeek]?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final device = usageData[selectedWeek]![index];
+                      return _buildDataCard(
+                        label: device['label']!,
+                        usage: device['usage']!,
                         color: Colors.green,
-                      ),
-                      _buildDataCard(
-                        label: 'AC-1',
-                        usage: '2500/10000',
-                        color: Colors.lightGreen,
-                      ),
-                      _buildDataCard(
-                        label: 'Fridge',
-                        usage: '4050/10000',
-                        color: Colors.teal,
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildWeekTab(BuildContext context, String label, {bool isSelected = false}) {
-    return GestureDetector(
-      onTap: () {
-        // Add functionality for week tab switching if required
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$label selected')));
-      },
-      child: Column(
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? Colors.white : Colors.white70,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-          if (isSelected)
-            Container(
-              width: 6,
-              height: 6,
-              margin: EdgeInsets.only(top: 4),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-            ),
         ],
       ),
     );

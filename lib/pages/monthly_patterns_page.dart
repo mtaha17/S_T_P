@@ -1,50 +1,50 @@
 import 'package:flutter/material.dart';
 
-class DailyPatternsPage extends StatefulWidget {
+class MonthlyPatternsPage extends StatefulWidget {
   @override
-  _DailyPatternsPageState createState() => _DailyPatternsPageState();
+  _MonthlyPatternsPageState createState() => _MonthlyPatternsPageState();
 }
 
-class _DailyPatternsPageState extends State<DailyPatternsPage> {
-  // Current selected day
-  int selectedDay = 19;
+class _MonthlyPatternsPageState extends State<MonthlyPatternsPage> {
+  // Current selected month
+  String selectedMonth = 'January';
 
-  // Sample usage data for each day
-  final Map<int, List<Map<String, String>>> usageData = {
-    19: [
-      {'label': 'TV-1', 'usage': '345/1000'},
-      {'label': 'AC-1', 'usage': '250/1000'},
-      {'label': 'Fridge', 'usage': '405/1000'},
+  // Sample usage data for each month
+  final Map<String, List<Map<String, String>>> usageData = {
+    'January': [
+      {'label': 'TV-1', 'usage': '3450/10000'},
+      {'label': 'AC-1', 'usage': '2500/10000'},
+      {'label': 'Fridge', 'usage': '4050/10000'},
     ],
-    20: [
-      {'label': 'TV-1', 'usage': '300/1000'},
-      {'label': 'AC-1', 'usage': '200/1000'},
-      {'label': 'Fridge', 'usage': '400/1000'},
+    'February': [
+      {'label': 'TV-1', 'usage': '3000/10000'},
+      {'label': 'AC-1', 'usage': '2200/10000'},
+      {'label': 'Fridge', 'usage': '4000/10000'},
     ],
-    21: [
-      {'label': 'TV-1', 'usage': '400/1000'},
-      {'label': 'AC-1', 'usage': '275/1000'},
-      {'label': 'Fridge', 'usage': '450/1000'},
+    'March': [
+      {'label': 'TV-1', 'usage': '4000/10000'},
+      {'label': 'AC-1', 'usage': '2700/10000'},
+      {'label': 'Fridge', 'usage': '4500/10000'},
     ],
-    22: [
-      {'label': 'TV-1', 'usage': '380/1000'},
-      {'label': 'AC-1', 'usage': '260/1000'},
-      {'label': 'Fridge', 'usage': '420/1000'},
+    'April': [
+      {'label': 'TV-1', 'usage': '3800/10000'},
+      {'label': 'AC-1', 'usage': '2600/10000'},
+      {'label': 'Fridge', 'usage': '4200/10000'},
     ],
-    23: [
-      {'label': 'TV-1', 'usage': '360/1000'},
-      {'label': 'AC-1', 'usage': '230/1000'},
-      {'label': 'Fridge', 'usage': '410/1000'},
+    'May': [
+      {'label': 'TV-1', 'usage': '3600/10000'},
+      {'label': 'AC-1', 'usage': '2400/10000'},
+      {'label': 'Fridge', 'usage': '4000/10000'},
     ],
-    24: [
-      {'label': 'TV-1', 'usage': '370/1000'},
-      {'label': 'AC-1', 'usage': '240/1000'},
-      {'label': 'Fridge', 'usage': '400/1000'},
+    'June': [
+      {'label': 'TV-1', 'usage': '3700/10000'},
+      {'label': 'AC-1', 'usage': '2500/10000'},
+      {'label': 'Fridge', 'usage': '4100/10000'},
     ],
-    25: [
-      {'label': 'TV-1', 'usage': '350/1000'},
-      {'label': 'AC-1', 'usage': '220/1000'},
-      {'label': 'Fridge', 'usage': '390/1000'},
+    'July': [
+      {'label': 'TV-1', 'usage': '3900/10000'},
+      {'label': 'AC-1', 'usage': '2600/10000'},
+      {'label': 'Fridge', 'usage': '4200/10000'},
     ],
   };
 
@@ -100,7 +100,7 @@ class _DailyPatternsPageState extends State<DailyPatternsPage> {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                'December 2024',
+                                '2024',
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.white70,
@@ -115,53 +115,49 @@ class _DailyPatternsPageState extends State<DailyPatternsPage> {
                         ],
                       ),
                       SizedBox(height: 16),
-                      // Date Selector
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(7, (index) {
-                          final day = 19 + index;
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedDay = day;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Text(
-                                  ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][index],
-                                  style: TextStyle(
-                                    color: selectedDay == day
-                                        ? Colors.white
-                                        : Colors.white70,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: selectedDay == day
-                                        ? Colors.white
-                                        : Colors.transparent,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text(
-                                    day.toString(),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: selectedDay == day
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                      color: selectedDay == day
-                                          ? Colors.blueAccent
-                                          : Colors.white,
+                      // Month Selector
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: usageData.keys.map((month) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedMonth = month;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      month,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: selectedMonth == month
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                        color: selectedMonth == month
+                                            ? Colors.white
+                                            : Colors.white70,
+                                      ),
                                     ),
-                                  ),
+                                    if (selectedMonth == month)
+                                      Container(
+                                        width: 6,
+                                        height: 6,
+                                        margin: EdgeInsets.only(top: 4),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                      ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          );
-                        }),
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ],
                   ),
@@ -190,9 +186,9 @@ class _DailyPatternsPageState extends State<DailyPatternsPage> {
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: usageData[selectedDay]?.length ?? 0,
+                    itemCount: usageData[selectedMonth]?.length ?? 0,
                     itemBuilder: (context, index) {
-                      final device = usageData[selectedDay]![index];
+                      final device = usageData[selectedMonth]![index];
                       return _buildDataCard(
                         label: device['label']!,
                         usage: device['usage']!,
