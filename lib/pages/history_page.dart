@@ -1,83 +1,168 @@
 import 'package:flutter/material.dart';
+import 'pages/night_mode_page.dart'; // Import Night Mode Page
+import 'pages/scan_devices_page.dart'; // Import Scan Devices Page
+import 'pages/history_page.dart'; // Import History Page
 
-class HistoryPage extends StatelessWidget {
+void main() {
+  runApp(PowerFlickApp());
+}
+
+class PowerFlickApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false, // Remove debug banner
+      title: 'PowerFlick',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: PowerFlickHomePage(),
+    );
+  }
+}
+
+class PowerFlickHomePage extends StatefulWidget {
+  @override
+  _PowerFlickHomePageState createState() => _PowerFlickHomePageState();
+}
+
+class _PowerFlickHomePageState extends State<PowerFlickHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'My history',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        title: Row(
+          children: [
+            Icon(Icons.flash_on),
+            SizedBox(width: 8),
+            Text('PowerFlick'),
+          ],
         ),
-        centerTitle: true,
       ),
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          // Background Image
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/background.jpg'), // Replace with your image
-                fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Welcome Section
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.blue, Colors.lightBlueAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(24),
+                  bottomRight: Radius.circular(24),
+                ),
               ),
-            ),
-          ),
-          // Content
-          SafeArea(
-            child: SingleChildScrollView(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
-                  _buildHistoryCard(
-                    context,
-                    title: 'Daily patterns',
-                    chartColor: Colors.green,
-                    onDiscover: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Discover Daily Patterns')),
-                      );
-                    },
-                    onCompare: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Compare Daily Patterns')),
-                      );
-                    },
+                  Text(
+                    'Welcome to PowerFlick!',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                  _buildHistoryCard(
-                    context,
-                    title: 'Weekly patterns',
-                    chartColor: Colors.lightGreen,
-                    onDiscover: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Discover Weekly Patterns')),
-                      );
-                    },
-                    onCompare: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Compare Weekly Patterns')),
-                      );
-                    },
-                  ),
-                  _buildHistoryCard(
-                    context,
-                    title: 'Monthly patterns',
-                    chartColor: Colors.teal,
-                    onDiscover: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Discover Monthly Patterns')),
-                      );
-                    },
-                    onCompare: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Compare Monthly Patterns')),
-                      );
-                    },
+                  SizedBox(height: 8),
+                  Text(
+                    'Manage your energy consumption efficiently.',
+                    style: TextStyle(fontSize: 16, color: Colors.white70),
                   ),
                 ],
               ),
+            ),
+
+            // Feature Grid
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                'Features',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 10),
+            GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.all(8),
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              children: [
+                _createFeatureCard(
+                  title: 'Dashboard',
+                  subtitle: 'View your energy stats',
+                  icon: Icons.bar_chart,
+                ),
+                _createFeatureCard(
+                  title: 'Notifications',
+                  subtitle: 'Stay updated',
+                  icon: Icons.notifications,
+                ),
+                _createFeatureCard(
+                  title: 'History',
+                  subtitle: 'Review your usage',
+                  icon: Icons.history,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HistoryPage()),
+                    );
+                  },
+                ),
+                _createFeatureCard(
+                  title: 'Settings',
+                  subtitle: 'Customize the app',
+                  icon: Icons.settings,
+                ),
+                _createFeatureCard(
+                  title: 'Night Mode',
+                  subtitle: 'Switch themes',
+                  icon: Icons.nights_stay,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NightModePage()),
+                    );
+                  },
+                ),
+                _createFeatureCard(
+                  title: 'Virtual Assistant',
+                  subtitle: 'Set up your assistant',
+                  icon: Icons.assistant,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ScanDevicesPage()),
+              );
+            },
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Add a new device',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[700],
             ),
           ),
         ],
@@ -85,100 +170,47 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHistoryCard(
-      BuildContext context, {
-        required String title,
-        required Color chartColor,
-        required VoidCallback onDiscover,
-        required VoidCallback onCompare,
-      }) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Chart Placeholder
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: chartColor.withOpacity(0.2),
-              shape: BoxShape.circle,
+  Widget _createFeatureCard({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
             ),
-            child: Center(
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: chartColor,
-                  shape: BoxShape.circle,
-                ),
+          ],
+        ),
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 40, color: Colors.blue),
+            SizedBox(height: 12),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          SizedBox(width: 16),
-          // Text and Buttons
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Discover Now Button
-                    OutlinedButton(
-                      onPressed: onDiscover,
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        side: BorderSide(color: Colors.black54),
-                      ),
-                      child: Text(
-                        'Discover now',
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    // Compare Button
-                    OutlinedButton(
-                      onPressed: onCompare,
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        side: BorderSide(color: Colors.blueAccent),
-                      ),
-                      child: Text(
-                        'Compare',
-                        style: TextStyle(fontSize: 14, color: Colors.blue),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            SizedBox(height: 8),
+            Text(
+              subtitle,
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
