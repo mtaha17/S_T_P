@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'daily_patterns_page.dart'; // Import Daily Patterns Page
-import 'weekly_patterns_page.dart'; // Import Weekly Patterns Page
 
 class HistoryPage extends StatelessWidget {
   @override
@@ -22,7 +20,7 @@ class HistoryPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/background.jpg'), // Replace with your asset path
+                image: AssetImage('assets/background.jpg'), // Replace with your image
                 fit: BoxFit.cover,
               ),
             ),
@@ -33,14 +31,13 @@ class HistoryPage extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 20),
-                  _createHistoryCard(
+                  _buildHistoryCard(
                     context,
                     title: 'Daily patterns',
                     chartColor: Colors.green,
                     onDiscover: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DailyPatternsPage()),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Discover Daily Patterns')),
                       );
                     },
                     onCompare: () {
@@ -49,14 +46,13 @@ class HistoryPage extends StatelessWidget {
                       );
                     },
                   ),
-                  _createHistoryCard(
+                  _buildHistoryCard(
                     context,
                     title: 'Weekly patterns',
                     chartColor: Colors.lightGreen,
                     onDiscover: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => WeeklyPatternsPage()),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Discover Weekly Patterns')),
                       );
                     },
                     onCompare: () {
@@ -65,7 +61,7 @@ class HistoryPage extends StatelessWidget {
                       );
                     },
                   ),
-                  _createHistoryCard(
+                  _buildHistoryCard(
                     context,
                     title: 'Monthly patterns',
                     chartColor: Colors.teal,
@@ -89,7 +85,7 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _createHistoryCard(
+  Widget _buildHistoryCard(
       BuildContext context, {
         required String title,
         required Color chartColor,
