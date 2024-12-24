@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'daily_patterns_page.dart'; // Import Daily Patterns Page
 import 'weekly_patterns_page.dart'; // Import Weekly Patterns Page
 import 'monthly_patterns_page.dart'; // Import Monthly Patterns Page
+import 'compare_daily_page.dart'; // Import Compare Daily Page
+import 'compare_weekly_page.dart'; // Import Compare Weekly Page
+import 'compare_monthly_page.dart'; // Import Compare Monthly Page
 
 class HistoryPage extends StatelessWidget {
   @override
@@ -56,46 +59,64 @@ class HistoryPage extends StatelessWidget {
 
             // History Cards
             _buildHistoryCard(
-              context: context,
+              context,
               title: 'Daily Patterns',
               icon: Icons.pie_chart,
               buttonText1: 'Discover Now',
               buttonText2: 'Compare',
               color: Colors.green,
-              onDiscoverTap: () {
+              onDiscover: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => DailyPatternsPage()),
                 );
               },
-            ),
-            SizedBox(height: 16),
-            _buildHistoryCard(
-              context: context,
-              title: 'Weekly Patterns',
-              icon: Icons.bar_chart,
-              buttonText1: 'Discover Now',
-              buttonText2: 'Compare',
-              color: Colors.orange,
-              onDiscoverTap: () {
+              onCompare: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WeeklyPatternsPage()),
+                  MaterialPageRoute(builder: (context) => CompareDailyPage()),
                 );
               },
             ),
             SizedBox(height: 16),
             _buildHistoryCard(
-              context: context,
+              context,
+              title: 'Weekly Patterns',
+              icon: Icons.bar_chart,
+              buttonText1: 'Discover Now',
+              buttonText2: 'Compare',
+              color: Colors.orange,
+              onDiscover: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WeeklyPatternsPage()),
+                );
+              },
+              onCompare: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CompareWeeklyPage()),
+                );
+              },
+            ),
+            SizedBox(height: 16),
+            _buildHistoryCard(
+              context,
               title: 'Monthly Patterns',
               icon: Icons.show_chart,
               buttonText1: 'Discover Now',
               buttonText2: 'Compare',
               color: Colors.purple,
-              onDiscoverTap: () {
+              onDiscover: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MonthlyPatternsPage()),
+                );
+              },
+              onCompare: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CompareMonthlyPage()),
                 );
               },
             ),
@@ -105,15 +126,16 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHistoryCard({
-    required BuildContext context,
-    required String title,
-    required IconData icon,
-    required String buttonText1,
-    required String buttonText2,
-    required Color color,
-    required VoidCallback onDiscoverTap,
-  }) {
+  Widget _buildHistoryCard(
+      BuildContext context, {
+        required String title,
+        required IconData icon,
+        required String buttonText1,
+        required String buttonText2,
+        required Color color,
+        required VoidCallback onDiscover,
+        required VoidCallback onCompare,
+      }) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16),
       padding: EdgeInsets.all(16),
@@ -155,7 +177,7 @@ class HistoryPage extends StatelessWidget {
                 Row(
                   children: [
                     ElevatedButton(
-                      onPressed: onDiscoverTap,
+                      onPressed: onDiscover,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: color,
                         shape: RoundedRectangleBorder(
@@ -166,12 +188,7 @@ class HistoryPage extends StatelessWidget {
                     ),
                     SizedBox(width: 8),
                     OutlinedButton(
-                      onPressed: () {
-                        // Handle Compare functionality
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Compare functionality is not implemented yet.')),
-                        );
-                      },
+                      onPressed: onCompare,
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: color),
                         shape: RoundedRectangleBorder(
