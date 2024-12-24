@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'pages/night_mode_page.dart'; // Import Night Mode Page
 import 'pages/scan_devices_page.dart'; // Import Scan Devices Page
+import 'pages/notifications_page.dart'; // Import Notifications Page
+import 'pages/history_page.dart'; // Import History Page
+import 'pages/settings_page.dart'; // Import Settings Page
+import 'pages/dashboard_page.dart'; // Import Dashboard Page
 
 void main() {
   runApp(PowerFlickApp());
@@ -99,21 +103,45 @@ class _PowerFlickHomePageState extends State<PowerFlickHomePage> {
                   title: 'Dashboard',
                   subtitle: 'View your energy stats',
                   icon: Icons.bar_chart,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DashboardPage()),
+                    );
+                  },
                 ),
                 _createFeatureCard(
                   title: 'Notifications',
                   subtitle: 'Stay updated',
                   icon: Icons.notifications,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NotificationsPage()),
+                    );
+                  },
                 ),
                 _createFeatureCard(
                   title: 'History',
                   subtitle: 'Review your usage',
                   icon: Icons.history,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HistoryPage()),
+                    );
+                  },
                 ),
                 _createFeatureCard(
                   title: 'Settings',
                   subtitle: 'Customize the app',
                   icon: Icons.settings,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsPage()),
+                    );
+                  },
                 ),
                 _createFeatureCard(
                   title: 'Night Mode',
@@ -130,6 +158,9 @@ class _PowerFlickHomePageState extends State<PowerFlickHomePage> {
                   title: 'Virtual Assistant',
                   subtitle: 'Set up your assistant',
                   icon: Icons.assistant,
+                  onTap: () {
+                    // Add navigation for Virtual Assistant Page if applicable
+                  },
                 ),
               ],
             ),

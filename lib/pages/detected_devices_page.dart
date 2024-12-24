@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'sensor_setup_page.dart'; // Import Sensor Setup Page
 
 class DetectedDevicesPage extends StatelessWidget {
   @override
@@ -53,7 +54,12 @@ class DetectedDevicesPage extends StatelessWidget {
             SizedBox(height: 32),
             Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SensorSetupPage()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                 ),
